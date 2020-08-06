@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>SVG Editor</title>
+
+	<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+	<nav class="zone blue sticky">
+	  	<h1 class="title">SVG EDITOR</h1>
+	</nav>
+	<div class="container zone" contenteditable="true" >
+		<svg width="400" height="250"  id="cvs" xmlns="http://www.w3.org/2000/svg" filter="url(#filter1)" xmlns:xlink=“http://www.w3.org/1999/xlink"> 
+			 <defs>
+			 	<!-- BOX SHADOW -->
+			    <filter id="filter1" x="-40%" y="-40%" height="200%" width="200%" >
+			      <feDropShadow id="feDropShadow1" dx="1" dy="1" stdDeviation="0" 
+  					flood-color="black" />
+			    </filter>
+			    
+			    <!-- BOX SHADOW -->
+			 	<!-- GRADIENT BACHGROUND -->
+			    <linearGradient id="grad1" x1="0%" y1="0%" x2="0%" y2="100%">
+			      <stop id="stop1" offset="0%" style="stop-color:#d55959;stop-opacity:1" />
+			      <stop id="stop2" offset="100%" style="stop-color:#3e809d;stop-opacity:1" />
+			    </linearGradient>
+			    <radialGradient id="grad2" cx="50%" cy="50%" r="60%" fx="50%" fy="50%">
+			      <stop id="stoprad1" offset="0%" style="stop-color:#d55959;
+			      stop-opacity:0" />
+			      <stop id="stoprad2" offset="100%" style="stop-color:#3e809d;stop-opacity:1" />
+			    </radialGradient>
+			    <!-- GRADIENT BACHGROUND -->
+			    
+			</defs>
+			  <g>
+			  	<rect x="0" y="0" width="100%" height="100%"  id="elementID" class="svgClass" fill="url(#grad1)" >
+			  	</rect>
+			  	
+			  </g>
+		</svg>
+	</div>
+	<div class="grid-container">
+		<div class="grid-item"> 
+			<h1>Lay Out</h1>
+			<div class="newRow">
+				<label for="shape">Select shape:</label>
+	  			 <select id="shape" name="shape" onchange="changeShape()">
+				    <option value="rect">Rectangle</option>
+				    <option value="circle">Circle</option>
+				    <option value="ellipse">Ellipse</option>
+				  </select>
+			</div>
+			<div class="newRow">
+				<!-- <label for="txtField">Add text field</label> -->
+				<button class="button" onclick="addtxtField()">Add Text Field</button>
+			</div>
+			<div class="newRow">
+				
+				<div class="divGroup">
+					<label for="txtField">Hyperlink</label><br><br>
+					<div class="newRow">
+						<label for="link">Link:</label>
+						<input type="text" id="link"><br>
+					</div>
+					<div class="newRow">
+						<label for="linkText">Text Link:</label>
+						<input type="text" id="linkText"><br>
+					</div>
+					<div class="newRow">
+						<label for="target">Target:</label>
+						 <select id="linktarget" name="target">
+						    <option value="_self">Self</option>
+						    <option value="_blank">Blank</option>
+						    <option value="_parent">Parent</option>
+						    <option value="_top">Top</option>
+						  </select>
+					</div>
+					<button class="button" onclick="addHyperlink()">Add Hyperlink</button>
+				</div>
+				
+			</div>
+			
+		</div>
+		<div class="grid-item">
+			<h1>Font</h1>
+			<div class="newRow">
+				<label for="favcolor">Select font color:</label>
+	  			<input type="color" id="fontColor" value="#ffffff" onInput="setFontStyle()"><br>
+			</div>
+			<div class="newRow">
+	  			<label for="txtBold">Bold</label>
+	  			<input type="checkbox" name="txtBold" id="txtBold" onclick="setFontStyle()">
+			<!-- </div>
+			<div class="newRow"> -->
+	  			<label for="txtItalic">Italic</label>
+	  			<input type="checkbox" name="txtItalic" id="txtItalic" onclick="setFontStyle()">
+			</div>
+			<div class="newRow">
+	  			<label for="txtUnderline">Underline</label>
+	  			<input type="checkbox" name="txtUnderline" id="txtUnderline" onclick="setFontStyle()">
+			<!-- </div>
+			<div class="newRow"> -->
+	  			<label for="txtStrikethrough">Strikethrough</label>
+	  			<input type="checkbox" name="txtStrikethrough" id="txtStrikethrough" onclick="setFontStyle()"><br><br>
+			</div>
+		</div>
+		<div class="grid-item"> 
+			<h1>Border</h1>
+			<div class="borderColor">
+				<label for="favcolor">Select border color:</label>
+	  			<input type="color" value="#000000" onInput="changeProperty();" id="borderColor"><br>
+			</div>
+			<div class="borderWidth">
+				<label for="favcolor">Select border width:</label>
+				<input type="range" min="1" max="100" value="3" class="slider" onInput="changeProperty();" id="borderWidth"><label id="lblSliderValue">3</label><br>
+			</div>
+			
+		</div>
+		<div class="grid-item"> 
+			<h1>Background</h1>
+			<div class="newRow">
+				<label for="startcolor">Select start color:</label>
+	  			<input type="color" id="startcolor" value="#d55959" onInput="SetBG(undefined,undefined);"><br>
+			</div>
+			<div class="newRow">
+				<label for="endcolor">Select end color:</label>
+	  			<input type="color" id="endcolor" value="#3e809d" onInput="SetBG(undefined,undefined);"><br>
+			</div>
+			<div class="orientation">
+					<label for="orientation">Orientation:</label>
+		  			<img class="imgSelect" src="./img/topbottom.png" alt="top to bottom" title="top to bottom" onclick="SetBG(1); changeActive(this);">
+		  			<img src="./img/leftright.png" alt="left to right" title="left to right" onclick="SetBG(2); changeActive(this);">
+		  			<img src="./img/topleftbottom.png" alt="top left to bottom right" title="top left to bottom right" onclick="SetBG(3); changeActive(this);">
+		  			<img src="./img/bottomleftright.png" alt="bottom left to top right" title="bottom left to top right" onclick="SetBG(4); changeActive(this);">
+		  			<img src="./img/radial.png" alt="from center to extremeties" title="from center to extremeties" onclick="SetBG(5); changeActive(this);">
+		    </div>
+		</div>
+		<div class="grid-item cornerRadius"> 
+			<h1>Corner Radius</h1>
+			<div class="newRow">
+				<label for="topLeft">Corner Width:</label>
+				<input type="range" min="0" max="50" value="0" class="slider" onInput="changeProperty();" id="cornerWidth"><label id="lblcornerWidth">0</label><br>
+			</div>
+		</div>
+		<div class="grid-item"> 
+			<h1>Size</h1>
+			<div class="newRow">
+				<label for="type">Type:</label><br><br>
+				<div class="btn-group">
+					<button class="button" onclick="SetSVGDimension(true)">Fit to Text</button>
+					<button class="button" onclick="SetSVGDimension(false)">Fixed</button>
+				</div><br><br>
+			</div>
+			<div class="newRow">
+				<label for="vPadding">Vertical padding:</label>
+				<input type="range" min="0" max="50" value="10" class="slider" onInput="changeProperty()" id="vPadding"><label id="lblvPadding">10</label><br>
+			</div>
+			<div class="newRow">
+				<label for="hPadding">Horizontal padding:</label>
+				<input type="range" min="0" max="50" value="10" class="slider" onInput="changeProperty()" id="hPadding"><label id="lblhPadding">10</label><br>
+			</div>
+		</div>
+		<div class="grid-item"> 
+			<h1>Shadow</h1>
+			<div class="divShadowMain">
+				<div class="divShadow" id="divShadow1">
+					<div class="newRow">
+						<label for="hOffset">Horizontal offset:</label>
+						<input type="range" min="-25" max="25" value="1" class="slider" onInput="changeProperty();" id="hOffset"><label id="lblhOffset">1</label><br>
+					</div>
+					<div class="newRow">
+						<label for="vOffset">Vertical offset:</label>
+						<input type="range" min="-25" max="25" value="1" class="slider" onInput="changeProperty();" id="vOffset"><label id="lblvOffset">1</label><br>
+					</div>
+					<div class="newRow">
+						<label for="blur">Blur:</label>
+						<input type="range" min="0" max="50" value="2" class="slider" onInput="changeProperty();" id="blur"><label id="lblBlur">2</label><br>
+					</div>
+					<div class="newRow">
+						<label for="shadowColor">Color:</label>
+		  				<input type="color" id="shadowColor" value="#665e5e" onInput="changeProperty();"><br>
+		  			</div>
+		  			<div class="newRow">
+		  				<img class="inline" src="./img/add.png" alt="add a shadow" title="add a shadow" onclick="CloneDivShadow()">
+	  					<img class="inline" src="./img/minus.png" alt="delete shadow" title="delete shadow" onclick="RemoveShadow(this)">
+	  					<img class="inline" src="./img/upward.png" alt="move upward" title="move upward" onclick="" hidden="hidden">
+	  					<img class="inline" src="./img/downward.png" alt="move downward" title="move downward" onclick="" hidden="hidden">
+		  			</div>
+	  					
+				</div>
+			</div>
+			
+		</div>
+		
+	</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script type="text/javascript" src="svgScript.js"></script>
+<script type="text/javascript" src="svgToPdf.js"></script> 	
+</body>
+</html>
