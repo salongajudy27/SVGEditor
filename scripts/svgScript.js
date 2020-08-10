@@ -213,7 +213,7 @@ function SetSVGDimension(isFit)
 			// dim = document.getElementsByTagName("text")[0].getBBox();
 			// $('svg').attr("width", dim.width + 10)
 			//     	.attr("height", dim.height+10);
-			var svg = document.getElementsByTagName("svg")[0].getBBox();
+			var svg = document.getElementById("elementID").getBBox();
 			var svgWidth = svg.width;
 			var svgHeight = svg.height;
 			dim = document.getElementsByTagName("text")
@@ -251,8 +251,8 @@ function SetSVGDimension(isFit)
 						.attr("y", y+'%');
 			}
 			
-			$('svg').attr("width", maxWidth + 20)
-			    	.attr("height", maxHeight + 20);
+			// $('svg').attr("width", maxWidth + 20)
+			//     	.attr("height", maxHeight + 20);
 			
 		}
 		// console.log(document.getElementsByTagName("text")[0].getBBox());
@@ -270,8 +270,11 @@ function SetSVGDimension(isFit)
 	else
 	{
 		$(".svgText").css("width", '400px');
-		$('svg').attr('height', 250);
-		$('svg').attr('width', 400);
+		var svgElement = document.getElementById("elementID");
+		$(svgElement).attr('height', 250);
+		$(svgElement).attr('width', 400);
+		// $('svg').attr('height', 250);
+		// $('svg').attr('width', 400);
 
 		// $('foreignObject').attr('height', 250);
 		// $('foreignObject').attr('width', 400);
@@ -363,6 +366,7 @@ function changeShape()
 	SVG.find("circle").remove();
 	SVG.find("rect").remove();
 	SVG.find("ellipse").remove();
+	SVG.find("g").remove();
 	SVG.find("text").remove();
 	var $svg = document.getElementsByTagName('svg')[0]; //Get svg element
 	var newElement = document.createElementNS("http://www.w3.org/2000/svg", $shape); //Create a path in SVG's namespace
@@ -385,8 +389,8 @@ function changeShape()
 		else
 		{
 			$('.cornerRadius').css('display','block');
-			newElement.setAttribute("x","0"); 
-			newElement.setAttribute("y","0"); 
+			newElement.setAttribute("x","50"); 
+			newElement.setAttribute("y","50"); 
 			newElement.setAttribute("width","400"); 
 			newElement.setAttribute("height","250"); 
 		}
@@ -400,7 +404,7 @@ function changeShape()
 }
 function addtxtField($aTag = null,$linktext=null)
 {
-	var $svg = document.getElementsByTagName('g')[0]; //Get svg element
+	var $svg = document.getElementsByTagName('svg')[0]; //Get svg element
 	var xmlns = "http://www.w3.org/2000/svg";
 	// $group = document.createElementNS(xmlns, 'g');
  //  	$svg.appendChild($group);
@@ -456,28 +460,35 @@ function addHyperlink(){
        var selectedElement= null;
        $("text").click(function (e) {
         // $("#cvs g > text").click(function (e) {
-        	selectedElement = null; 
-        	// console.log("click");
-            currentX = e.clientX;
-            currentY = e.clientY;
-            selectedElement = e.target;
+        	if (selectedElement == null)
+        	{
+        		// console.log("click");
+	            currentX = e.clientX;
+	            currentY = e.clientY;
+	            selectedElement = e.target;
 
-            var element =  $(e.currentTarget).attr('id');
-        	node = document.getElementById(element);
-		    if (document.body.createTextRange) {
-		        const range = document.body.createTextRange();
-		        range.moveToElementText(node);
-		        range.select();
-		    } else if (window.getSelection) {
-		  
-		        const selection = window.getSelection();
-		        const range = document.createRange();
-		        range.selectNodeContents(node);
-		        selection.removeAllRanges();
-		        selection.addRange(range);
-		    } else {
-		        console.warn("Could not select text in node: Unsupported browser.");
-		    }
+	            var element =  $(e.currentTarget).attr('id');
+	        	node = document.getElementById(element);
+			    if (document.body.createTextRange) {
+			        const range = document.body.createTextRange();
+			        range.moveToElementText(node);
+			        range.select();
+			    } else if (window.getSelection) {
+			  
+			        const selection = window.getSelection();
+			        const range = document.createRange();
+			        range.selectNodeContents(node);
+			        selection.removeAllRanges();
+			        selection.addRange(range);
+			    } else {
+			        console.warn("Could not select text in node: Unsupported browser.");
+			    }
+        	}
+        	else
+        	{
+        		selectedElement = null;  
+        	}
+        	
           
         }).mousemove(function (e) {        
             if (selectedElement) {
